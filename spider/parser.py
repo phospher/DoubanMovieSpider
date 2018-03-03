@@ -25,12 +25,12 @@ class DoubanMovieParser(HTMLParser):
     def _add_data(self, attrs):
         self.data.append({
             'subject': self._get_attr_value_by_name(attrs, 'data-subject'),
-            'votecount': self._get_attr_value_by_name(attrs, 'data-votecount'),
+            'votecount': int(self._get_attr_value_by_name(attrs, 'data-votecount')),
             'title': self._get_attr_value_by_name(attrs, 'data-title'),
             'actors': self._get_attr_value_by_name(attrs, 'data-actors'),
             'director': self._get_attr_value_by_name(attrs, 'data-director'),
             'region': self._get_attr_value_by_name(attrs, 'data-region'),
-            'socre': self._get_attr_value_by_name(attrs, 'data-score'),
+            'socre': float(self._get_attr_value_by_name(attrs, 'data-score')),
             'createdtime': datetime.now()
         })
 
