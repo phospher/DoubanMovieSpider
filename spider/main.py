@@ -22,6 +22,7 @@ def persist_data(data):
     client = MongoClient('phospher-tencentcloud', 27017)
     collection = client.douban.movies
     collection.insert_many(data)
+    client.close()
 
 
 def init_log():
