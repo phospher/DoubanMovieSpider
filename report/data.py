@@ -1,5 +1,5 @@
 import datetime
-from pymongo import MongoClient
+import sqlite3
 
 DAY_DURATION = 6
 
@@ -9,43 +9,16 @@ def get_data():
     startDate = endDate+datetime.timedelta(days=(-1*DAY_DURATION))
     result = []
 
-    with MongoClient('phospher-tencentcloud', 27017) as client:
-        collection = client.douban.movies
-        pipeline = [
-            {
-                '$match': {
-                    'createdtime': {
-                        '$gte': startDate,
-                        '$lt': endDate
-                    }
-                }
-            },
-            {
-                '$group': {
-                    '_id': {
-                        'title': '$title',
-                        'year': {
-                            '$year': '$createdtime'
-                        },
-                        'month': {
-                            '$month': '$createdtime'
-                        },
-                        'day': {
-                            '$dayOfMonth': '$createdtime'
-                        }
-                    },
-                    'score': {
-                        '$avg': '$socre'
-                    }
-                }
-            }
-        ]
+    with sqlite3.connect('douban.db') as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "select title, strftime('%Y/%m/%d', createdtime), avg(socre) from movie where createdtime between ? and ? group by title, strftime('%Y/%m/%d', createdtime)", (startDate, endDate))
 
-        for item in collection.aggregate(pipeline):
+        for item in cur.fetchall():
             result.append({
-                'title': item['_id']['title'],
-                'date': item['_id']['year']*10000+item['_id']['month']*100+item['_id']['day'],
-                'score': item['score']
+                'title': item[0],
+                'date': item[1],
+                'score': item[2]
             })
 
     return result

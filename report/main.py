@@ -17,14 +17,6 @@ def get_score(data, title, date):
     return None
 
 
-def format_date(date):
-    year = date//10000
-    temp = date % 10000
-    month = temp//100
-    day = temp % 100
-    return '{0:04d}/{1:02d}/{2:02d}'.format(year, month, day)
-
-
 def confirm_dir():
     if not os.path.exists(RESULT_DIR):
         os.makedirs(RESULT_DIR)
@@ -38,7 +30,7 @@ def main():
     plotly_data = []
     for title in title_data:
         plotly_data.append(go.Scatter(
-            x=[format_date(x) for x in x_data],
+            x=[x for x in x_data],
             y=[get_score(chart_data, title, d) for d in x_data],
             mode='lines',
             name=title
