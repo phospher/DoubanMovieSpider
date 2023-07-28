@@ -71,10 +71,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    endDate = datetime.datetime.now()
-    startDate = endDate+datetime.timedelta(days=(-1*6))
-    with sqlite3.connect('douban.db') as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "select title, strftime('%Y%m%d', createdtime), avg(socre) from movie where createdtime between ? and ? group by title, strftime('%Y%m%d', createdtime)", (startDate, endDate))
-        print(cur.fetchall())
