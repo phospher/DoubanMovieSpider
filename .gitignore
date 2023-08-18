@@ -1,3 +1,4 @@
 spider/__pycache__/*
 *.db
 result/**
+.vscode/
