@@ -12,13 +12,14 @@ def get_data():
     with sqlite3.connect('douban.db') as conn:
         cur = conn.cursor()
         cur.execute(
-            "select title, strftime('%Y/%m/%d', createdtime), avg(socre) from movie where createdtime between ? and ? group by title, strftime('%Y/%m/%d', createdtime)", (startDate, endDate))
+            "select subject, title, strftime('%Y/%m/%d', createdtime), avg(socre) from movie where createdtime between ? and ? group by subject, title, strftime('%Y/%m/%d', createdtime)", (startDate, endDate))
 
         for item in cur.fetchall():
             result.append({
-                'title': item[0],
-                'date': item[1],
-                'score': item[2]
+                'subject': item[0],
+                'title': item[1],
+                'date': item[2],
+                'score': item[3]
             })
 
     return result

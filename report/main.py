@@ -17,6 +17,13 @@ def get_score(data, title, date):
     return None
 
 
+def get_subject(data, title):
+    for item in data:
+        if item['title'] == title:
+            return item['subject']
+    return None
+
+
 def confirm_dir():
     if not os.path.exists(RESULT_DIR):
         os.makedirs(RESULT_DIR)
@@ -32,6 +39,8 @@ def main():
         plotly_data.append(go.Scatter(
             x=[x for x in x_data],
             y=[get_score(chart_data, title, d) for d in x_data],
+            text='<a href="https://movie.douban.com/subject/{}/" target="_blank">{}</a>'.format(
+                get_subject(chart_data, title), title),
             mode='lines',
             name=title
         ))
