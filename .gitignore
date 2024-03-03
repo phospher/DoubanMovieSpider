@@ -1,4 +1,4 @@
-spider/__pycache__/*
+**/__pycache__/*
 *.db
 result/**
 .vscode/
